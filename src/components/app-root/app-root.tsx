@@ -14,16 +14,20 @@ export class AppRoot {
   _socketService: SocketIoService = SocketIoService.getInstance();
 
   @State() list: any[];
+  @State() type: string;
+  @State() id: string;
 
   
   
   constructor() {
     this._socketService;
     this.list = [];
+    this.type = "Light";
+    this.id = "Light1";
   }
 
   componentWillLoad() {
-    fetch('http://localhost:3000/subscription?entity=Light')
+    fetch('http://localhost:3000/subscription?entity=' + this.type + '&id=' + this.id)
       .then((response: Response) => response.json())
       .then(response => {
         this.list = JSON.parse(JSON.stringify(response)).entities
@@ -35,7 +39,7 @@ export class AppRoot {
    */
   componentDidLoad() {    
     this._socketService.onSocketReady(() => {
-      this._socketService.onSocket('payload', (msg: string) => {
+      this._socketService.onSocket(this.type + "-" + this.id, (msg: string) => {
         this.list = JSON.parse(JSON.stringify(msg)).entities
       });
     });
