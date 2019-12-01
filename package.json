@@ -1,8 +1,8 @@
 {
-  "name": "seek-somebody",
+  "name": "stenciljsFiware",
   "private": true,
   "version": "0.0.1",
-  "description": "Stencil App Starter",
+  "description": "",
   "scripts": {
     "build": "stencil build",
     "start": "stencil build --dev --watch --serve",
@@ -13,12 +13,5 @@
     "@stencil/core": "~0.16.2",
     "@stencil/router": "~0.3.1"
   },
-  "license": "MIT",
-  "devDependencies": {
-    "@types/jest": "23.3.14",
-    "@types/puppeteer": "1.6.4",
-    "jest": "23.6.0",
-    "jest-cli": "23.6.0",
-    "puppeteer": "1.8.0"
-  }
+  "license": "MIT"
 }

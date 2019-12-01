@@ -23,7 +23,7 @@ export class AppRoot {
     this._socketService;
     this.list = [];
     this.type = "Light";
-    this.id = "Light1";
+    this.id = "";
   }
 
   componentWillLoad() {
