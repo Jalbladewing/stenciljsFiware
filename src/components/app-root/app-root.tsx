@@ -1,5 +1,5 @@
-import { Component, h } from '@stencil/core';
-
+import { Component, State } from '@stencil/core';
+import { SocketIoService } from './app-io';
 
 @Component({
   tag: 'app-root',
@@ -7,8 +7,42 @@ import { Component, h } from '@stencil/core';
   shadow: true
 })
 export class AppRoot {
+  
+  /**
+   * socket io instance 
+   */
+  _socketService: SocketIoService = SocketIoService.getInstance();
+
+  @State() list: any[];
+
+  
+  
+  constructor() {
+    this._socketService;
+    this.list = [];
+  }
+
+  componentWillLoad() {
+    fetch('http://localhost:3000/subscription?entity=Light')
+      .then((response: Response) => response.json())
+      .then(response => {
+        this.list = JSON.parse(JSON.stringify(response)).entities
+      });
+  }
+
+  /**
+   * inital socket usage
+   */
+  componentDidLoad() {    
+    this._socketService.onSocketReady(() => {
+      this._socketService.onSocket('payload', (msg: string) => {
+        this.list = JSON.parse(JSON.stringify(msg)).entities
+      });
+    });
+  }
 
   render() {
+
     return (
       <div>
         <header>
@@ -16,13 +50,20 @@ export class AppRoot {
         </header>
 
         <main>
-          <stencil-router>
-            <stencil-route-switch scrollTopOffset={0}>
-              <stencil-route url='/' component='app-home' exact={true} />
-              <stencil-route url='/profile/:name' component='app-profile' />
-            </stencil-route-switch>
-          </stencil-router>
+          <ul class="list-group">
+            {this.list.map((todo) =>
+              <li class="list-group-item active">
+              <div class="md-v-line"></div><i class="fas fa-laptop mr-4 pr-3"></i>
+                {todo.name} - ( 
+                {todo.values.map((todoVale) =>
+                <span>{todoVale.name}: {todoVale.value}, </span>
+                )}
+                )
+              </li>
+            )}
+          </ul>
         </main>
+
       </div>
     );
   }
