@@ -7,10 +7,21 @@
 
 import '@stencil/core';
 
-
+import 'stencil-apexcharts';
 
 
 export namespace Components {
+
+  interface AppRealchart {
+    'id': string;
+    'service_url': string;
+    'type': string;
+  }
+  interface AppRealchartAttributes extends StencilHTMLAttributes {
+    'id'?: string;
+    'service_url'?: string;
+    'type'?: string;
+  }
 
   interface AppRoot {
     'id': string;
@@ -37,15 +48,23 @@ export namespace Components {
 
 declare global {
   interface StencilElementInterfaces {
+    'AppRealchart': Components.AppRealchart;
     'AppRoot': Components.AppRoot;
     'AppTable': Components.AppTable;
   }
 
   interface StencilIntrinsicElements {
+    'app-realChart': Components.AppRealchartAttributes;
     'app-root': Components.AppRootAttributes;
     'app-table': Components.AppTableAttributes;
   }
 
+
+  interface HTMLAppRealchartElement extends Components.AppRealchart, HTMLStencilElement {}
+  var HTMLAppRealchartElement: {
+    prototype: HTMLAppRealchartElement;
+    new (): HTMLAppRealchartElement;
+  };
 
   interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {}
   var HTMLAppRootElement: {
@@ -60,11 +79,13 @@ declare global {
   };
 
   interface HTMLElementTagNameMap {
+    'app-realChart': HTMLAppRealchartElement
     'app-root': HTMLAppRootElement
     'app-table': HTMLAppTableElement
   }
 
   interface ElementTagNameMap {
+    'app-realChart': HTMLAppRealchartElement;
     'app-root': HTMLAppRootElement;
     'app-table': HTMLAppTableElement;
   }
