@@ -22,15 +22,28 @@ export namespace Components {
     'service_url'?: string;
     'type'?: string;
   }
+
+  interface AppTable {
+    'id': string;
+    'service_url': string;
+    'type': string;
+  }
+  interface AppTableAttributes extends StencilHTMLAttributes {
+    'id'?: string;
+    'service_url'?: string;
+    'type'?: string;
+  }
 }
 
 declare global {
   interface StencilElementInterfaces {
     'AppRoot': Components.AppRoot;
+    'AppTable': Components.AppTable;
   }
 
   interface StencilIntrinsicElements {
     'app-root': Components.AppRootAttributes;
+    'app-table': Components.AppTableAttributes;
   }
 
 
@@ -40,12 +53,20 @@ declare global {
     new (): HTMLAppRootElement;
   };
 
+  interface HTMLAppTableElement extends Components.AppTable, HTMLStencilElement {}
+  var HTMLAppTableElement: {
+    prototype: HTMLAppTableElement;
+    new (): HTMLAppTableElement;
+  };
+
   interface HTMLElementTagNameMap {
     'app-root': HTMLAppRootElement
+    'app-table': HTMLAppTableElement
   }
 
   interface ElementTagNameMap {
     'app-root': HTMLAppRootElement;
+    'app-table': HTMLAppTableElement;
   }
 
 
