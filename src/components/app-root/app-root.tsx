@@ -1,4 +1,4 @@
-import { Component, State } from '@stencil/core';
+import { Component, State, Prop } from '@stencil/core';
 import { SocketIoService } from './app-io';
 
 @Component({
@@ -14,20 +14,19 @@ export class AppRoot {
   _socketService: SocketIoService = SocketIoService.getInstance();
 
   @State() list: any[];
-  @State() type: string;
-  @State() id: string;
+  @Prop() type: string;
+  @Prop() id: string;
+  @Prop() service_url: string;
 
   
   
   constructor() {
     this._socketService;
     this.list = [];
-    this.type = "Light";
-    this.id = "";
   }
 
   componentWillLoad() {
-    fetch('http://localhost:3000/subscription?entity=' + this.type + '&id=' + this.id)
+    fetch('http://'+ this.service_url +':3000/subscription?entity=' + this.type + '&id=' + this.id)
       .then((response: Response) => response.json())
       .then(response => {
         this.list = JSON.parse(JSON.stringify(response)).entities
@@ -55,12 +54,12 @@ export class AppRoot {
 
         <main>
           <ul class="list-group">
-            {this.list.map((todo) =>
+            {this.list.map((entity) =>
               <li class="list-group-item active">
               <div class="md-v-line"></div><i class="fas fa-laptop mr-4 pr-3"></i>
-                {todo.name} - ( 
-                {todo.values.map((todoVale) =>
-                <span>{todoVale.name}: {todoVale.value}, </span>
+                {entity.name} - ( 
+                {entity.values.map((entityValue) =>
+                <span>{entityValue.name}: {entityValue.value}, </span>
                 )}
                 )
               </li>

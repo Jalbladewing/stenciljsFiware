@@ -12,8 +12,16 @@ import '@stencil/core';
 
 export namespace Components {
 
-  interface AppRoot {}
-  interface AppRootAttributes extends StencilHTMLAttributes {}
+  interface AppRoot {
+    'id': string;
+    'service_url': string;
+    'type': string;
+  }
+  interface AppRootAttributes extends StencilHTMLAttributes {
+    'id'?: string;
+    'service_url'?: string;
+    'type'?: string;
+  }
 }
 
 declare global {
