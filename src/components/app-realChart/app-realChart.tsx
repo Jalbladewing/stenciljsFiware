@@ -40,7 +40,7 @@ export class AppRealChart {
          { 
              this.listo.push(parseInt(entityValue.value))
              console.log(this.listo)
-             this.lista.push(new Date())
+             this.lista.push(new Date().getTime())
          }
         })
         
@@ -58,7 +58,7 @@ export class AppRealChart {
             if(entityValue.name == "temperature")
             { 
                 this.listo.push(entityValue.value)
-                this.lista.push(new Date())
+                this.lista.push(new Date().getTime())
             }
            })
       });
@@ -73,14 +73,22 @@ export class AppRealChart {
             type="line"
             width="600px"
             series={[{
-                name: 'sales',
+                name: 'Temperature',
                 data: this.listo
             }]}
             options={{
                 xaxis: {
                     categories: this.lista,
-                    //type: "datetime",
-                    //range: 777600000
+                    type: "datetime",
+                    range: 3000,
+                    labels: {
+                      datetimeFormatter: {
+                        year: 'yyyy',
+                        month: 'MMM \'yy',
+                        day: 'dd MMM',
+                        hour: 'HH:mm'
+                      }
+                    }
                 },
                 chart: {
                     animations: {

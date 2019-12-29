@@ -12,6 +12,21 @@ import 'stencil-apexcharts';
 
 export namespace Components {
 
+  interface AppComparechart {
+    'data_to_compare': string;
+    'entity_to_compare': string;
+    'id': string;
+    'service_url': string;
+    'type': string;
+  }
+  interface AppComparechartAttributes extends StencilHTMLAttributes {
+    'data_to_compare'?: string;
+    'entity_to_compare'?: string;
+    'id'?: string;
+    'service_url'?: string;
+    'type'?: string;
+  }
+
   interface AppRealchart {
     'id': string;
     'service_url': string;
@@ -48,17 +63,25 @@ export namespace Components {
 
 declare global {
   interface StencilElementInterfaces {
+    'AppComparechart': Components.AppComparechart;
     'AppRealchart': Components.AppRealchart;
     'AppRoot': Components.AppRoot;
     'AppTable': Components.AppTable;
   }
 
   interface StencilIntrinsicElements {
-    'app-realChart': Components.AppRealchartAttributes;
+    'app-compareChart': Components.AppComparechartAttributes;
+    'app-realchart': Components.AppRealchartAttributes;
     'app-root': Components.AppRootAttributes;
     'app-table': Components.AppTableAttributes;
   }
 
+
+  interface HTMLAppComparechartElement extends Components.AppComparechart, HTMLStencilElement {}
+  var HTMLAppComparechartElement: {
+    prototype: HTMLAppComparechartElement;
+    new (): HTMLAppComparechartElement;
+  };
 
   interface HTMLAppRealchartElement extends Components.AppRealchart, HTMLStencilElement {}
   var HTMLAppRealchartElement: {
@@ -79,13 +102,15 @@ declare global {
   };
 
   interface HTMLElementTagNameMap {
-    'app-realChart': HTMLAppRealchartElement
+    'app-compareChart': HTMLAppComparechartElement
+    'app-realchart': HTMLAppRealchartElement
     'app-root': HTMLAppRootElement
     'app-table': HTMLAppTableElement
   }
 
   interface ElementTagNameMap {
-    'app-realChart': HTMLAppRealchartElement;
+    'app-compareChart': HTMLAppComparechartElement;
+    'app-realchart': HTMLAppRealchartElement;
     'app-root': HTMLAppRootElement;
     'app-table': HTMLAppTableElement;
   }
