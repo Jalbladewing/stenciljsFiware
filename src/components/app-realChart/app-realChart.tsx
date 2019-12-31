@@ -18,8 +18,9 @@ export class AppRealChart {
   @State() listo: any[];
   @State() lista: any[];
   @Prop() type: string;
-  @Prop() id: string;
+  @Prop() entityid: string;
   @Prop() service_url: string;
+  @Prop() data_to_compare: string;
 
   constructor() {
     this._socketService;
@@ -29,14 +30,14 @@ export class AppRealChart {
   }
 
   componentWillLoad() {
-    fetch('http://'+ this.service_url +':3000/subscription?entity=' + this.type + '&id=' + this.id)
+    fetch('http://'+ this.service_url +':3000/subscription?entity=' + this.type + '&id=' + this.entityid)
       .then((response: Response) => response.json())
       .then(response => {
         this.list = JSON.parse(JSON.stringify(response)).entities
         this.list[0].values.map((entityValue) =>{
             console.log(entityValue.name)
             console.log(entityValue.value)
-         if(entityValue.name == "temperature")
+         if(entityValue.name == this.data_to_compare)
          { 
              this.listo.push(parseInt(entityValue.value))
              console.log(this.listo)
@@ -52,10 +53,10 @@ export class AppRealChart {
    */
   componentDidLoad() {    
     this._socketService.onSocketReady(() => {
-      this._socketService.onSocket(this.type + "-" + this.id, (msg: string) => {
+      this._socketService.onSocket(this.type + "-" + this.entityid, (msg: string) => {
         this.list = JSON.parse(JSON.stringify(msg)).entities
         this.list[0].values.map((entityValue) =>{
-            if(entityValue.name == "temperature")
+            if(entityValue.name == this.data_to_compare)
             { 
                 this.listo.push(entityValue.value)
                 this.lista.push(new Date().getTime())
@@ -71,9 +72,10 @@ export class AppRealChart {
         <div>
           <apex-chart
             type="line"
-            width="600px"
+            width="100%"
+            height="300px"
             series={[{
-                name: 'Temperature',
+                name: this.data_to_compare,
                 data: this.listo
             }]}
             options={{

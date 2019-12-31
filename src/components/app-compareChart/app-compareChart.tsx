@@ -18,7 +18,7 @@ export class AppCompareChart {
   @State() roomData: any;
   @State() maxData: any;
   @Prop() type: string;
-  @Prop() id: string;
+  @Prop() entityid: string;
   @Prop() service_url: string;
   @Prop() entity_to_compare: string;
   @Prop() data_to_compare: string;
@@ -31,8 +31,7 @@ export class AppCompareChart {
   }
 
   componentWillLoad() {
-      console.log(this.data_to_compare);
-    fetch('http://'+ this.service_url +':3000/subscription?entity=' + this.type + '&id=' + this.id)
+    fetch('http://'+ this.service_url +':3000/subscription?entity=' + this.type + '&id=' + this.entityid)
       .then((response: Response) => response.json())
       .then(response => {
         this.list = JSON.parse(JSON.stringify(response)).entities
@@ -45,7 +44,7 @@ export class AppCompareChart {
    */
   componentDidLoad() {    
     this._socketService.onSocketReady(() => {
-      this._socketService.onSocket(this.type + "-" + this.id, (msg: string) => {
+      this._socketService.onSocket(this.type + "-" + this.entityid, (msg: string) => {
         this.list = JSON.parse(JSON.stringify(msg)).entities
         this.updateGraphValues();
       });

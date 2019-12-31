@@ -15,25 +15,27 @@ export namespace Components {
   interface AppComparechart {
     'data_to_compare': string;
     'entity_to_compare': string;
-    'id': string;
+    'entityid': string;
     'service_url': string;
     'type': string;
   }
   interface AppComparechartAttributes extends StencilHTMLAttributes {
     'data_to_compare'?: string;
     'entity_to_compare'?: string;
-    'id'?: string;
+    'entityid'?: string;
     'service_url'?: string;
     'type'?: string;
   }
 
   interface AppRealchart {
-    'id': string;
+    'data_to_compare': string;
+    'entityid': string;
     'service_url': string;
     'type': string;
   }
   interface AppRealchartAttributes extends StencilHTMLAttributes {
-    'id'?: string;
+    'data_to_compare'?: string;
+    'entityid'?: string;
     'service_url'?: string;
     'type'?: string;
   }
@@ -50,12 +52,14 @@ export namespace Components {
   }
 
   interface AppTable {
-    'id': string;
+    'entityid': string;
+    'page_url': string;
     'service_url': string;
     'type': string;
   }
   interface AppTableAttributes extends StencilHTMLAttributes {
-    'id'?: string;
+    'entityid'?: string;
+    'page_url'?: string;
     'service_url'?: string;
     'type'?: string;
   }
@@ -71,7 +75,7 @@ declare global {
 
   interface StencilIntrinsicElements {
     'app-compareChart': Components.AppComparechartAttributes;
-    'app-realchart': Components.AppRealchartAttributes;
+    'app-realChart': Components.AppRealchartAttributes;
     'app-root': Components.AppRootAttributes;
     'app-table': Components.AppTableAttributes;
   }
@@ -103,14 +107,14 @@ declare global {
 
   interface HTMLElementTagNameMap {
     'app-compareChart': HTMLAppComparechartElement
-    'app-realchart': HTMLAppRealchartElement
+    'app-realChart': HTMLAppRealchartElement
     'app-root': HTMLAppRootElement
     'app-table': HTMLAppTableElement
   }
 
   interface ElementTagNameMap {
     'app-compareChart': HTMLAppComparechartElement;
-    'app-realchart': HTMLAppRealchartElement;
+    'app-realChart': HTMLAppRealchartElement;
     'app-root': HTMLAppRootElement;
     'app-table': HTMLAppTableElement;
   }

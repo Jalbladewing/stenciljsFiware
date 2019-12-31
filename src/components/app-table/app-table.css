@@ -60,7 +60,7 @@ table {
     width: 3%;
 }
 .table tr th:last-child {
-    width: 100px;
+    width: 3%;
 }
 .table-striped tbody tr:nth-of-type(odd) {
     background-color: #fcfcfc;
@@ -261,4 +261,29 @@ th {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+}
+
+.next {
+    background-color: #03A9F4;
+    color: white !important;
+  }
+  
+.round {
+    border-radius: 50%;
+}
+a {
+    text-decoration: none;
+    display: inline-block;
+    padding: 8px 16px;
+  }
+  
+  a:hover {
+    background-color: #337ab7;
+    color: black;
+  }
+.button-td {
+    width: 10px;
+}
+.no-display {
+    display: none;
 }
