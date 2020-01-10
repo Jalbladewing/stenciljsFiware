@@ -12,6 +12,14 @@ import 'stencil-apexcharts';
 
 export namespace Components {
 
+  interface AppCombobox {
+    'combodata': string[];
+  }
+  interface AppComboboxAttributes extends StencilHTMLAttributes {
+    'combodata'?: string[];
+    'onEntitySelected'?: (event: CustomEvent) => void;
+  }
+
   interface AppComparechart {
     'data_to_compare': string;
     'entity_to_compare': string;
@@ -63,23 +71,42 @@ export namespace Components {
     'service_url'?: string;
     'type'?: string;
   }
+
+  interface AppWritecomponent {
+    'page_url': string;
+    'service_url': string;
+  }
+  interface AppWritecomponentAttributes extends StencilHTMLAttributes {
+    'page_url'?: string;
+    'service_url'?: string;
+  }
 }
 
 declare global {
   interface StencilElementInterfaces {
+    'AppCombobox': Components.AppCombobox;
     'AppComparechart': Components.AppComparechart;
     'AppRealchart': Components.AppRealchart;
     'AppRoot': Components.AppRoot;
     'AppTable': Components.AppTable;
+    'AppWritecomponent': Components.AppWritecomponent;
   }
 
   interface StencilIntrinsicElements {
-    'app-compareChart': Components.AppComparechartAttributes;
-    'app-realChart': Components.AppRealchartAttributes;
+    'app-combobox': Components.AppComboboxAttributes;
+    'app-comparechart': Components.AppComparechartAttributes;
+    'app-realchart': Components.AppRealchartAttributes;
     'app-root': Components.AppRootAttributes;
     'app-table': Components.AppTableAttributes;
+    'app-writeComponent': Components.AppWritecomponentAttributes;
   }
 
+
+  interface HTMLAppComboboxElement extends Components.AppCombobox, HTMLStencilElement {}
+  var HTMLAppComboboxElement: {
+    prototype: HTMLAppComboboxElement;
+    new (): HTMLAppComboboxElement;
+  };
 
   interface HTMLAppComparechartElement extends Components.AppComparechart, HTMLStencilElement {}
   var HTMLAppComparechartElement: {
@@ -105,18 +132,28 @@ declare global {
     new (): HTMLAppTableElement;
   };
 
+  interface HTMLAppWritecomponentElement extends Components.AppWritecomponent, HTMLStencilElement {}
+  var HTMLAppWritecomponentElement: {
+    prototype: HTMLAppWritecomponentElement;
+    new (): HTMLAppWritecomponentElement;
+  };
+
   interface HTMLElementTagNameMap {
-    'app-compareChart': HTMLAppComparechartElement
-    'app-realChart': HTMLAppRealchartElement
+    'app-combobox': HTMLAppComboboxElement
+    'app-comparechart': HTMLAppComparechartElement
+    'app-realchart': HTMLAppRealchartElement
     'app-root': HTMLAppRootElement
     'app-table': HTMLAppTableElement
+    'app-writeComponent': HTMLAppWritecomponentElement
   }
 
   interface ElementTagNameMap {
-    'app-compareChart': HTMLAppComparechartElement;
-    'app-realChart': HTMLAppRealchartElement;
+    'app-combobox': HTMLAppComboboxElement;
+    'app-comparechart': HTMLAppComparechartElement;
+    'app-realchart': HTMLAppRealchartElement;
     'app-root': HTMLAppRootElement;
     'app-table': HTMLAppTableElement;
+    'app-writeComponent': HTMLAppWritecomponentElement;
   }
 
 

@@ -11,6 +11,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta http-equiv="x-ua-compatible" content="IE=Edge"/>
 
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" />
   <script src='https://unpkg.com/stencil-apexcharts/dist/apex.js'></script>
   <link href="/build/app.css" rel="stylesheet">
   <script src="/build/app.js"></script>
@@ -19,15 +20,7 @@
   <link rel="manifest" href="/manifest.json">
 </head>
 <body>
-
-  <app-table type="Room" entityid="" service_url="localhost" page_url="entity.html"></app-table>
-  <div style="height: 500px;width: 100%;background:
-  #eee;
-  display: inline-block;">
-  <app-realChart type="Room" entityid="Room1" service_url="localhost" data_to_compare="temperature"></app-realChart>
-</div>
-  <app-compareChart type="Room" entityid="" service_url="localhost" data_to_compare="temperature" entity_to_compare="Room1"></app-compareChart>
-  <app-compareChart type="Room" entityid="" service_url="localhost" data_to_compare="pressure" entity_to_compare="Room2"></app-compareChart>
+  <app-writeComponent service_url="localhost" page_url='<app-table type="Room" entityid="" service_url="localhost" page_url="entity.html"></app-table>'></app-writeComponent>
 
 </body>
 </html>

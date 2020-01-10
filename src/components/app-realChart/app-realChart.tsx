@@ -15,8 +15,8 @@ export class AppRealChart {
   _socketService: SocketIoService = SocketIoService.getInstance();
 
   @State() list: any[];
-  @State() listo: any[];
-  @State() lista: any[];
+  @State() valueList: any[];
+  @State() dateList: any[];
   @Prop() type: string;
   @Prop() entityid: string;
   @Prop() service_url: string;
@@ -25,8 +25,8 @@ export class AppRealChart {
   constructor() {
     this._socketService;
     this.list = [];
-    this.listo = [];
-    this.lista = [];
+    this.valueList = [];
+    this.dateList = [];
   }
 
   componentWillLoad() {
@@ -39,9 +39,9 @@ export class AppRealChart {
             console.log(entityValue.value)
          if(entityValue.name == this.data_to_compare)
          { 
-             this.listo.push(parseInt(entityValue.value))
-             console.log(this.listo)
-             this.lista.push(new Date().getTime())
+             this.valueList.push(parseInt(entityValue.value))
+             console.log(this.valueList)
+             this.dateList.push(new Date().getTime())
          }
         })
         
@@ -58,8 +58,8 @@ export class AppRealChart {
         this.list[0].values.map((entityValue) =>{
             if(entityValue.name == this.data_to_compare)
             { 
-                this.listo.push(entityValue.value)
-                this.lista.push(new Date().getTime())
+                this.valueList.push(entityValue.value)
+                this.dateList.push(new Date().getTime())
             }
            })
       });
@@ -76,11 +76,11 @@ export class AppRealChart {
             height="300px"
             series={[{
                 name: this.data_to_compare,
-                data: this.listo
+                data: this.valueList
             }]}
             options={{
                 xaxis: {
-                    categories: this.lista,
+                    categories: this.dateList,
                     type: "datetime",
                     range: 3000,
                     labels: {

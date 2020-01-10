@@ -16,5 +16,7 @@
     "stencil-apexcharts": "^2.1.1"
   },
   "license": "MIT",
-  "devDependencies": {}
+  "devDependencies": {
+    "workbox-build": "3.4.1"
+  }
 }
