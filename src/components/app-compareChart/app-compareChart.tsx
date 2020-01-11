@@ -1,4 +1,4 @@
-import { Component, State, Prop } from '@stencil/core';
+import { Component, State, Prop, Listen } from '@stencil/core';
 import { SocketIoService } from './app-io';
 import 'stencil-apexcharts';
 
@@ -15,26 +15,39 @@ export class AppCompareChart {
   _socketService: SocketIoService = SocketIoService.getInstance();
 
   @State() list: any[];
+  @State() attributeList: string[];
+  @State() attributeSelected: string;
+  @State() auxAttributeSelected: string;
   @State() roomData: any;
   @State() maxData: any;
   @Prop() type: string;
   @Prop() entityid: string;
+  @Prop() filter: string;
   @Prop() service_url: string;
   @Prop() entity_to_compare: string;
-  @Prop() data_to_compare: string;
+
+  private modalDialog?: HTMLDivElement;
 
   constructor() {
     this._socketService;
     this.list = [];
+    this.attributeList = [];
+    this.attributeSelected = "";
+    this.auxAttributeSelected = "";
+    this.filter = "";
     this.roomData = 0;
     this.maxData = 0;
+    this.modalButtonClick = this.modalButtonClick.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.submitNewAttribute = this.submitNewAttribute.bind(this);
   }
 
   componentWillLoad() {
-    fetch('http://'+ this.service_url +':3000/subscription?entity=' + this.type + '&id=' + this.entityid)
+    fetch('http://'+ this.service_url +':3000/subscription?entity=' + this.type + '&id=' + this.entityid + '&queryFilter=' + this.filter)
       .then((response: Response) => response.json())
       .then(response => {
         this.list = JSON.parse(JSON.stringify(response)).entities
+        this.updateAttributeList();
         this.updateGraphValues();
       });
   }
@@ -44,7 +57,7 @@ export class AppCompareChart {
    */
   componentDidLoad() {    
     this._socketService.onSocketReady(() => {
-      this._socketService.onSocket(this.type + "-" + this.entityid, (msg: string) => {
+      this._socketService.onSocket(this.type + "-" + this.entityid + "-" + this.filter, (msg: string) => {
         this.list = JSON.parse(JSON.stringify(msg)).entities
         this.updateGraphValues();
       });
@@ -57,7 +70,7 @@ export class AppCompareChart {
     this.list.map((entity) =>
     {
             entity.values.map((entityValue) =>{
-                if(entityValue.name == this.data_to_compare)
+                if(entityValue.name == this.attributeSelected)
                 { 
                     if(entity.name == this.entity_to_compare) this.roomData = entityValue.value;
                     if(this.maxData < entityValue.value) this.maxData = entityValue.value;
@@ -67,14 +80,64 @@ export class AppCompareChart {
     );
   }
 
+  updateAttributeList()
+  {
+    if(this.list.length > 0)
+    {
+      this.attributeList = [];
+      for(var i = 0; i < this.list[0].values.length; i++)
+      {
+        if(i == 0) this.attributeSelected = this.list[0].values[i].name
+        this.attributeList.push(this.list[0].values[i].name);
+      }
+    }
+  }
+
   valueToPercent (value) {
     return (value * 100) / this.maxData
+  }
+
+  modalButtonClick()
+  {
+      this.modalDialog.style.display = "block";
+  }
+
+  closeModal()
+  {
+    this.modalDialog.style.display = "none";
+  }
+
+  submitNewAttribute()
+  {
+    this.attributeSelected = this.auxAttributeSelected;
+    this.closeModal();
+    this.updateGraphValues();
+  }
+
+  @Listen('entitySelected')
+  entitySelected(event: CustomEvent) {
+    this.auxAttributeSelected = event.detail;
   }
 
   render() {
 
     return (
-        <div>
+        <div class="wrapContent">
+
+          <div id="myModal" class="modal" ref={el => this.modalDialog = el as HTMLDivElement}>
+            <div class="modal-content">
+              <div class="modal-header">
+                <span class="close" onClick={this.closeModal}>&times;</span>
+                <h2>Radial Chart Attribute Selection</h2>
+              </div>
+              <div class="modal-body">
+                <app-comboBox combodata={this.attributeList}></app-comboBox>
+                <input class='button -blue center' type="submit" value="Submit" onClick={this.submitNewAttribute}/>
+              </div>
+            </div>
+          </div>
+
+          <button class='button -blue center editBtn' onClick={this.modalButtonClick}>Edit</button>
           <apex-chart
             type="radialBar"
             width="600px"
@@ -132,7 +195,7 @@ export class AppCompareChart {
                     }
                   },
                 series: [this.valueToPercent(this.roomData)],
-                labels: ['Percent of ' + this.data_to_compare],
+                labels: ['Percent of ' + this.attributeSelected],
                 stroke: {
                     lineCap: 'round'
                   },

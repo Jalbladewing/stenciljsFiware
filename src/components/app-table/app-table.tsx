@@ -17,16 +17,18 @@ export class AppTable {
   @State() list: any[];
   @Prop() type: string;
   @Prop() entityid: string;
+  @Prop() filter: string;
   @Prop() service_url: string;
   @Prop() page_url: string;
 
   constructor() {
     this._socketService;
     this.list = [];
+    this.filter = "";
   }
 
   componentWillLoad() {
-    fetch('http://'+ this.service_url +':3000/subscription?entity=' + this.type + '&id=' + this.entityid)
+    fetch('http://'+ this.service_url +':3000/subscription?entity=' + this.type + '&id=' + this.entityid + '&queryFilter=' + this.filter)
       .then((response: Response) => response.json())
       .then(response => {
         this.list = JSON.parse(JSON.stringify(response)).entities
@@ -38,7 +40,7 @@ export class AppTable {
    */
   componentDidLoad() {    
     this._socketService.onSocketReady(() => {
-      this._socketService.onSocket(this.type + "-" + this.entityid, (msg: string) => {
+      this._socketService.onSocket(this.type + "-" + this.entityid + "-" + this.filter, (msg: string) => {
         this.list = JSON.parse(JSON.stringify(msg)).entities
       });
     });
@@ -86,7 +88,7 @@ export class AppTable {
                                 {entity.values.map((entityValue) =>
                                     <td>{entityValue.value}</td>
                                 )}
-                                {this.entityid=="" ? <td class="button-td"><a href={this.page_url+"?id="+entity.name} class=" next round">&#8250;</a></td>:<td class="no-display"></td>}
+                                {this.entityid=="" ? <td class="button-td"><a href={this.page_url+"?type=" + this.type + "&id="+entity.name} class=" next round">&#8250;</a></td>:<td class="no-display"></td>}
                             </tr>
                         )}				
                     </tbody>

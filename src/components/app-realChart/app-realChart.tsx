@@ -1,5 +1,6 @@
-import { Component, State, Prop } from '@stencil/core';
+import { Component, State, Prop, Listen } from '@stencil/core';
 import { SocketIoService } from './app-io';
+import 'apexcharts';
 import 'stencil-apexcharts';
 
 @Component({
@@ -15,36 +16,39 @@ export class AppRealChart {
   _socketService: SocketIoService = SocketIoService.getInstance();
 
   @State() list: any[];
+  @State() attributeList: string[];
+  @State() attributeSelected: string;
+  @State() auxAttributeSelected: string;
   @State() valueList: any[];
   @State() dateList: any[];
   @Prop() type: string;
   @Prop() entityid: string;
+  @Prop() filter: string;
   @Prop() service_url: string;
-  @Prop() data_to_compare: string;
+
+  private modalDialog?: HTMLDivElement;
 
   constructor() {
     this._socketService;
     this.list = [];
+    this.attributeList = [];
+    this.attributeSelected = "";
+    this.auxAttributeSelected = "";
+    this.filter = "";
     this.valueList = [];
     this.dateList = [];
+    this.modalButtonClick = this.modalButtonClick.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.submitNewAttribute = this.submitNewAttribute.bind(this);
   }
 
   componentWillLoad() {
-    fetch('http://'+ this.service_url +':3000/subscription?entity=' + this.type + '&id=' + this.entityid)
+    fetch('http://'+ this.service_url +':3000/subscription?entity=' + this.type + '&id=' + this.entityid + '&queryFilter=' + this.filter)
       .then((response: Response) => response.json())
       .then(response => {
         this.list = JSON.parse(JSON.stringify(response)).entities
-        this.list[0].values.map((entityValue) =>{
-            console.log(entityValue.name)
-            console.log(entityValue.value)
-         if(entityValue.name == this.data_to_compare)
-         { 
-             this.valueList.push(parseInt(entityValue.value))
-             console.log(this.valueList)
-             this.dateList.push(new Date().getTime())
-         }
-        })
-        
+        this.updateAttributeList();
+        this.updateGraphValues();
       });
   }
 
@@ -53,29 +57,95 @@ export class AppRealChart {
    */
   componentDidLoad() {    
     this._socketService.onSocketReady(() => {
-      this._socketService.onSocket(this.type + "-" + this.entityid, (msg: string) => {
-        this.list = JSON.parse(JSON.stringify(msg)).entities
-        this.list[0].values.map((entityValue) =>{
-            if(entityValue.name == this.data_to_compare)
-            { 
-                this.valueList.push(entityValue.value)
-                this.dateList.push(new Date().getTime())
-            }
-           })
+      this._socketService.onSocket(this.type + "-" + this.entityid + "-" + this.filter, (msg: string) => {
+        this.list = JSON.parse(JSON.stringify(msg)).entities;
+        this.updateGraphValues();
       });
     });
+  }
+
+  updateGraphValues()
+  {
+    if(this.list.length > 0)
+    {
+      this.list[0].values.map((entityValue) =>{
+        if(entityValue.name == this.attributeSelected)
+        { 
+            this.valueList.push(entityValue.value)
+            this.dateList.push(new Date().getTime())
+        }
+      })
+    }
+  }
+
+  updateAttributeList()
+  {
+    if(this.list.length > 0)
+    {
+      this.attributeList = [];
+      for(var i = 0; i < this.list[0].values.length; i++)
+      {
+        if(i == 0) this.attributeSelected = this.list[0].values[i].name
+        this.attributeList.push(this.list[0].values[i].name);
+      }
+    }
+  }
+
+  modalButtonClick()
+  {
+      this.modalDialog.style.display = "block";
+  }
+
+  closeModal()
+  {
+    this.modalDialog.style.display = "none";
+  }
+
+  submitNewAttribute()
+  {
+    this.attributeSelected = this.auxAttributeSelected;
+    this.closeModal();
+    this.updateGraphValues();
+    this.valueList = [];
+    this.dateList = [];
+  }
+
+  @Listen('entitySelected')
+  entitySelected(event: CustomEvent) {
+    this.auxAttributeSelected = event.detail;
+  }
+
+  getAttributeName()
+  {
+    return this.attributeSelected.charAt(0).toUpperCase() + this.attributeSelected.substring(1, this.attributeSelected.length);
   }
 
   render() {
 
     return (
-        <div>
+      <div class="wrapContent">
+
+        <div id="myModal" class="modal" ref={el => this.modalDialog = el as HTMLDivElement}>
+          <div class="modal-content">
+            <div class="modal-header">
+              <span class="close" onClick={this.closeModal}>&times;</span>
+              <h2>Linear Chart Attribute Selection</h2>
+            </div>
+            <div class="modal-body">
+              <app-comboBox combodata={this.attributeList}></app-comboBox>
+              <input class='button -blue center' type="submit" value="Submit" onClick={this.submitNewAttribute}/>
+            </div>
+          </div>
+        </div>
+
+    <h1>{this.getAttributeName()}</h1>
+        <button class='button -blue center editBtn' onClick={this.modalButtonClick}>Edit</button>
           <apex-chart
             type="line"
             width="100%"
             height="300px"
             series={[{
-                name: this.data_to_compare,
+                name: this.attributeSelected,
                 data: this.valueList
             }]}
             options={{

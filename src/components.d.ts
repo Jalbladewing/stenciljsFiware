@@ -21,29 +21,29 @@ export namespace Components {
   }
 
   interface AppComparechart {
-    'data_to_compare': string;
     'entity_to_compare': string;
     'entityid': string;
+    'filter': string;
     'service_url': string;
     'type': string;
   }
   interface AppComparechartAttributes extends StencilHTMLAttributes {
-    'data_to_compare'?: string;
     'entity_to_compare'?: string;
     'entityid'?: string;
+    'filter'?: string;
     'service_url'?: string;
     'type'?: string;
   }
 
   interface AppRealchart {
-    'data_to_compare': string;
     'entityid': string;
+    'filter': string;
     'service_url': string;
     'type': string;
   }
   interface AppRealchartAttributes extends StencilHTMLAttributes {
-    'data_to_compare'?: string;
     'entityid'?: string;
+    'filter'?: string;
     'service_url'?: string;
     'type'?: string;
   }
@@ -61,12 +61,14 @@ export namespace Components {
 
   interface AppTable {
     'entityid': string;
+    'filter': string;
     'page_url': string;
     'service_url': string;
     'type': string;
   }
   interface AppTableAttributes extends StencilHTMLAttributes {
     'entityid'?: string;
+    'filter'?: string;
     'page_url'?: string;
     'service_url'?: string;
     'type'?: string;
@@ -93,9 +95,9 @@ declare global {
   }
 
   interface StencilIntrinsicElements {
-    'app-combobox': Components.AppComboboxAttributes;
-    'app-comparechart': Components.AppComparechartAttributes;
-    'app-realchart': Components.AppRealchartAttributes;
+    'app-comboBox': Components.AppComboboxAttributes;
+    'app-compareChart': Components.AppComparechartAttributes;
+    'app-realChart': Components.AppRealchartAttributes;
     'app-root': Components.AppRootAttributes;
     'app-table': Components.AppTableAttributes;
     'app-writeComponent': Components.AppWritecomponentAttributes;
@@ -139,18 +141,18 @@ declare global {
   };
 
   interface HTMLElementTagNameMap {
-    'app-combobox': HTMLAppComboboxElement
-    'app-comparechart': HTMLAppComparechartElement
-    'app-realchart': HTMLAppRealchartElement
+    'app-comboBox': HTMLAppComboboxElement
+    'app-compareChart': HTMLAppComparechartElement
+    'app-realChart': HTMLAppRealchartElement
     'app-root': HTMLAppRootElement
     'app-table': HTMLAppTableElement
     'app-writeComponent': HTMLAppWritecomponentElement
   }
 
   interface ElementTagNameMap {
-    'app-combobox': HTMLAppComboboxElement;
-    'app-comparechart': HTMLAppComparechartElement;
-    'app-realchart': HTMLAppRealchartElement;
+    'app-comboBox': HTMLAppComboboxElement;
+    'app-compareChart': HTMLAppComparechartElement;
+    'app-realChart': HTMLAppRealchartElement;
     'app-root': HTMLAppRootElement;
     'app-table': HTMLAppTableElement;
     'app-writeComponent': HTMLAppWritecomponentElement;

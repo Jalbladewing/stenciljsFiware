@@ -56,7 +56,10 @@ export class AppComboBox {
     return (
         <div>
             <div class="dropdown">
+              <div>
                 <input ref={el => this.dropDownSearch = el as HTMLInputElement} onFocus={this.dropDownClick} onBlur={this.dropDownClick} type="text" placeholder="Search.." id="myInput" onKeyUp={this.filterFunction} value={this.selectedData}></input>
+                <span class="input-icon">&#11167;</span>
+                </div>
                 <div ref={el => this.dropDown = el as HTMLDivElement} id="myDropdown" class="dropdown-content">
                     {this.combodata.length > 0 ? this.combodata.map((elementName) =>
                                 <a onMouseDown={(event) => this.clickElement(event)}>{elementName}</a>
