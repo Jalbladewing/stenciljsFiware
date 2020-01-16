@@ -14,10 +14,16 @@ export namespace Components {
 
   interface AppCombobox {
     'combodata': string[];
+    'comboid': string;
+    'componentWidth': string;
+    'selectedData': string;
   }
   interface AppComboboxAttributes extends StencilHTMLAttributes {
     'combodata'?: string[];
+    'comboid'?: string;
+    'componentWidth'?: string;
     'onEntitySelected'?: (event: CustomEvent) => void;
+    'selectedData'?: string;
   }
 
   interface AppComparechart {

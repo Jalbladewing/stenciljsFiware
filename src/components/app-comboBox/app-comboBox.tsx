@@ -1,4 +1,4 @@
-import { Component, State, Prop, Event, EventEmitter } from '@stencil/core';
+import { Component, Prop, Event, EventEmitter } from '@stencil/core';
 
 
 @Component({
@@ -9,8 +9,11 @@ import { Component, State, Prop, Event, EventEmitter } from '@stencil/core';
 export class AppComboBox {
 
   @Prop() combodata: string[];
-  @State() selectedData: string;
+  @Prop() comboid: string;
+  @Prop() componentWidth: string;
+  @Prop({ mutable: true }) selectedData: string;
 
+  private dropDownParent?: HTMLDivElement;
   private dropDown?: HTMLDivElement;
   private dropDownSearch?: HTMLInputElement;
 
@@ -18,6 +21,15 @@ export class AppComboBox {
     this.dropDownClick = this.dropDownClick.bind(this);
     this.filterFunction = this.filterFunction.bind(this);
     this.selectedData = ""
+  }
+
+  componentDidLoad()
+  {
+    if(this.componentWidth)
+    {
+      this.dropDownParent.setAttribute('style', 'width:'+ this.componentWidth + 'px !important');
+      this.dropDownSearch.setAttribute('style', 'width:'+ this.componentWidth + 'px !important');
+    } 
   }
 
   dropDownClick()
@@ -40,8 +52,8 @@ export class AppComboBox {
 
   clickElement(event)
   {
-    this.selectedData = event.target.innerHTML;
-    this.entitySelected.emit(this.selectedData);
+    this.selectedData = event.target.innerText;
+    this.entitySelected.emit(this.comboid + ":" + this.selectedData);
   }
 
   @Event({
@@ -55,7 +67,7 @@ export class AppComboBox {
 
     return (
         <div>
-            <div class="dropdown">
+            <div class="dropdown" ref={el => this.dropDownParent = el as HTMLDivElement}>
               <div>
                 <input ref={el => this.dropDownSearch = el as HTMLInputElement} onFocus={this.dropDownClick} onBlur={this.dropDownClick} type="text" placeholder="Search.." id="myInput" onKeyUp={this.filterFunction} value={this.selectedData}></input>
                 <span class="input-icon">&#11167;</span>

@@ -15,6 +15,7 @@ export class AppTable {
   _socketService: SocketIoService = SocketIoService.getInstance();
 
   @State() list: any[];
+  @State() attributeList: string[];
   @Prop() type: string;
   @Prop() entityid: string;
   @Prop() filter: string;
@@ -24,6 +25,7 @@ export class AppTable {
   constructor() {
     this._socketService;
     this.list = [];
+    this.attributeList = [];
     this.filter = "";
   }
 
@@ -32,6 +34,7 @@ export class AppTable {
       .then((response: Response) => response.json())
       .then(response => {
         this.list = JSON.parse(JSON.stringify(response)).entities
+        this.updateAttributeList();
       });
   }
 
@@ -41,9 +44,44 @@ export class AppTable {
   componentDidLoad() {    
     this._socketService.onSocketReady(() => {
       this._socketService.onSocket(this.type + "-" + this.entityid + "-" + this.filter, (msg: string) => {
-        this.list = JSON.parse(JSON.stringify(msg)).entities
+        this.list = JSON.parse(JSON.stringify(msg)).entities;
+        this.updateAttributeList();
       });
     });
+  }
+
+  updateAttributeList()
+  {
+      if(this.type != "" && this.type != 'undefined')
+      {
+        if(this.list.length > 0)
+        {
+          this.attributeList = [];
+          for(var i = 0; i < this.list[0].values.length; i++)
+          {
+            this.attributeList.push(this.list[0].values[i].name);
+          }
+        }
+      }else
+      {
+        fetch('http://'+ this.service_url +':3000/attributeList?entity=' + this.entityid)
+        .then((response: Response) => response.json())
+        .then(response => {
+          this.attributeList = response;
+        });
+      }
+  }
+
+  writeRows(entityAttributes, attribute)
+  {
+    for(var i = 0; i < entityAttributes.length; i++)
+    {
+        if(entityAttributes[i].name == attribute)
+        {
+            return <td>{entityAttributes[i].value}</td>;
+        } 
+    }
+    return <td>None</td>;
   }
 
   render() {
@@ -70,8 +108,8 @@ export class AppTable {
                             <th>
                                 Name
                             </th>
-                            {this.list.length > 0 ? this.list[0].values.map((entityValue) =>
-                                <th>{entityValue.name}</th>
+                            {this.attributeList.length > 0 ? this.attributeList.map((attribute) =>
+                                <th>{attribute}</th>
                             ):<th>No items found</th>}
                         </tr>
                     </thead>
@@ -85,8 +123,8 @@ export class AppTable {
                                     </span>
                                 </td>
                                 <td>{entity.name}</td>
-                                {entity.values.map((entityValue) =>
-                                    <td>{entityValue.value}</td>
+                                {this.attributeList.map((attribute) =>
+                                    this.writeRows(entity.values, attribute)
                                 )}
                                 {this.entityid=="" ? <td class="button-td"><a href={this.page_url+"?type=" + this.type + "&id="+entity.name} class=" next round">&#8250;</a></td>:<td class="no-display"></td>}
                             </tr>

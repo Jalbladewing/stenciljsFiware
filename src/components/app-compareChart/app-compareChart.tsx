@@ -116,7 +116,12 @@ export class AppCompareChart {
 
   @Listen('entitySelected')
   entitySelected(event: CustomEvent) {
-    this.auxAttributeSelected = event.detail;
+    switch(event.detail.split(":")[0])
+    {
+      case "attributeCombo":
+        this.auxAttributeSelected = event.detail.split(":")[1];
+        return;
+    }
   }
 
   render() {
@@ -131,7 +136,7 @@ export class AppCompareChart {
                 <h2>Radial Chart Attribute Selection</h2>
               </div>
               <div class="modal-body">
-                <app-comboBox combodata={this.attributeList}></app-comboBox>
+                <app-comboBox combodata={this.attributeList} comboid="attributeCombo"></app-comboBox>
                 <input class='button -blue center' type="submit" value="Submit" onClick={this.submitNewAttribute}/>
               </div>
             </div>
