@@ -66,14 +66,15 @@ export class AppCompareChart {
 
   updateGraphValues()
   {
-    this.maxData = 0;
+    this.maxData = 0.0;
     this.list.map((entity) =>
     {
             entity.values.map((entityValue) =>{
                 if(entityValue.name == this.attributeSelected)
                 { 
                     if(entity.name == this.entity_to_compare) this.roomData = entityValue.value;
-                    if(this.maxData < entityValue.value) this.maxData = entityValue.value;
+                    if(parseFloat(this.maxData) < parseFloat(entityValue.value))
+                    { console.log("PRev Max: " + this.maxData); console.log("PRev Value: " + entityValue.value); this.maxData = entityValue.value;}
                 }
             });  
     }
@@ -85,15 +86,24 @@ export class AppCompareChart {
     if(this.list.length > 0)
     {
       this.attributeList = [];
-      for(var i = 0; i < this.list[0].values.length; i++)
+      for(var i = 0; i < this.list.length; i++)
       {
-        if(i == 0) this.attributeSelected = this.list[0].values[i].name
-        this.attributeList.push(this.list[0].values[i].name);
+        if(this.list[i].name == this.entity_to_compare)
+        {
+          for(var j = 0; j < this.list[i].values.length; j++)
+          {
+            if(j == 0) this.attributeSelected = this.list[i].values[j].name
+            this.attributeList.push(this.list[i].values[j].name);
+          }
+          break;
+        }
       }
     }
   }
 
   valueToPercent (value) {
+    console.log("Value: " + value);
+    console.log("Max: " + this.maxData);
     return (value * 100) / this.maxData
   }
 
