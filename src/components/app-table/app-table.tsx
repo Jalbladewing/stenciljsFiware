@@ -9,6 +9,11 @@ import 'stencil-apexcharts';
 })
 export class AppTable {
 
+    /**
+   * socket io instance 
+   */
+  _socketService: SocketIoService;
+
   @State() list: any[];
   @State() attributeList: string[];
   @Prop() type: string;
@@ -16,11 +21,6 @@ export class AppTable {
   @Prop() filter: string;
   @Prop() service_url: string;
   @Prop() page_url: string;
-
-    /**
-   * socket io instance 
-   */
-  _socketService: SocketIoService = SocketIoService.getInstance(this.service_url);
 
   constructor() {
     this._socketService;
@@ -30,6 +30,7 @@ export class AppTable {
   }
 
   componentWillLoad() {
+    this._socketService = SocketIoService.getInstance(this.service_url);
     fetch('http://'+ this.service_url +':3000/subscription?entity=' + this.type + '&id=' + this.entityid + '&queryFilter=' + this.filter)
       .then((response: Response) => response.json())
       .then(response => {

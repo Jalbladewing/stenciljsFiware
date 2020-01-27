@@ -9,6 +9,11 @@ import 'stencil-apexcharts';
 })
 export class AppCompareChart {
   
+  /**
+   * socket io instance 
+   */
+  _socketService: SocketIoService;
+
   @State() list: any[];
   @State() attributeList: string[];
   @State() attributeSelected: string;
@@ -20,11 +25,6 @@ export class AppCompareChart {
   @Prop() filter: string;
   @Prop() service_url: string;
   @Prop() entity_to_compare: string;
-
-  /**
-   * socket io instance 
-   */
-  _socketService: SocketIoService = SocketIoService.getInstance(this.service_url);
 
   private modalDialog?: HTMLDivElement;
 
@@ -43,6 +43,7 @@ export class AppCompareChart {
   }
 
   componentWillLoad() {
+    this._socketService = SocketIoService.getInstance(this.service_url);
     fetch('http://'+ this.service_url +':3000/subscription?entity=' + this.type + '&id=' + this.entityid + '&queryFilter=' + this.filter)
       .then((response: Response) => response.json())
       .then(response => {

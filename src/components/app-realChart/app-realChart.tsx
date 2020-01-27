@@ -10,6 +10,11 @@ import 'stencil-apexcharts';
 })
 export class AppRealChart {
   
+  /**
+   * socket io instance 
+   */
+  _socketService: SocketIoService;
+
   @State() list: any[];
   @State() attributeList: string[];
   @State() attributeSelected: string;
@@ -20,11 +25,6 @@ export class AppRealChart {
   @Prop() entityid: string;
   @Prop() filter: string;
   @Prop() service_url: string;
-
-  /**
-   * socket io instance 
-   */
-  _socketService: SocketIoService = SocketIoService.getInstance(this.service_url);
 
   private modalDialog?: HTMLDivElement;
 
@@ -43,6 +43,7 @@ export class AppRealChart {
   }
 
   componentWillLoad() {
+    this._socketService = SocketIoService.getInstance(this.service_url);
     fetch('http://'+ this.service_url +':3000/subscription?entity=' + this.type + '&id=' + this.entityid + '&queryFilter=' + this.filter)
       .then((response: Response) => response.json())
       .then(response => {

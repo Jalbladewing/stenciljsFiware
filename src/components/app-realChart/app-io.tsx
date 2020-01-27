@@ -6,7 +6,7 @@ export interface Socket {
 export class SocketIoService {
     private static instance: SocketIoService;
 
-    static getInstance(path: string = "dist/collection/assets/lib/socket.io.js", url: string = "localhost"): SocketIoService {
+    static getInstance(url: string = "localhost", path: string = "dist/collection/assets/lib/socket.io.js"): SocketIoService {
         SocketIoService.instance = SocketIoService.instance || new SocketIoService(path, url);
         return SocketIoService.instance;
     }
