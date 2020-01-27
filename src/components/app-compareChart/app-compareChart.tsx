@@ -74,7 +74,7 @@ export class AppCompareChart {
                 { 
                     if(entity.name == this.entity_to_compare) this.roomData = entityValue.value;
                     if(parseFloat(this.maxData) < parseFloat(entityValue.value))
-                    { console.log("PRev Max: " + this.maxData); console.log("PRev Value: " + entityValue.value); this.maxData = entityValue.value;}
+                    {this.maxData = entityValue.value;}
                 }
             });  
     }
@@ -102,8 +102,6 @@ export class AppCompareChart {
   }
 
   valueToPercent (value) {
-    console.log("Value: " + value);
-    console.log("Max: " + this.maxData);
     return (value * 100) / this.maxData
   }
 
