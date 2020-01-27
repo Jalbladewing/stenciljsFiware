@@ -6,8 +6,8 @@ export interface Socket {
 export class SocketIoService {
     private static instance: SocketIoService;
 
-    static getInstance(path: string = "dist/collection/assets/lib/socket.io.js"): SocketIoService {
-        SocketIoService.instance = SocketIoService.instance || new SocketIoService(path);
+    static getInstance(path: string = "dist/collection/assets/lib/socket.io.js", url: string = "localhost"): SocketIoService {
+        SocketIoService.instance = SocketIoService.instance || new SocketIoService(path, url);
         return SocketIoService.instance;
     }
 
@@ -16,25 +16,25 @@ export class SocketIoService {
     path: string;
     lib: boolean = false;
 
-    constructor(path: string) {
+    constructor(path: string, url: string) {
         if (SocketIoService.instance) {
             throw new Error("Error - use SocketIoService.getInstance()");
         }
         this.path = path;
-        this.attachLibrary();
+        this.attachLibrary(url);
     }
 
     /**
      * attach lib to the head of the page
      */
-    attachLibrary(): void {
+    attachLibrary(url: string): void {
         if (!this.lib) {
             const scriptTag = document.createElement('script');
             scriptTag.src = this.path;
             document.querySelector('head').appendChild(scriptTag);
             this.ensureIoPresent().then(function () {
                 this._io = window['io'];
-                this._socket = this._io('http://localhost:3000');
+                this._socket = this._io('http://' + url + ':3000');
                 this.lib = true;
             }.bind(this));
         }

@@ -8,17 +8,15 @@ import { SocketIoService } from './app-io';
 })
 export class AppRoot {
   
-  /**
-   * socket io instance 
-   */
-  _socketService: SocketIoService = SocketIoService.getInstance();
-
   @State() list: any[];
   @Prop() type: string;
   @Prop() id: string;
   @Prop() service_url: string;
 
-  
+  /**
+   * socket io instance 
+   */
+  _socketService: SocketIoService = SocketIoService.getInstance(this.service_url);
   
   constructor() {
     this._socketService;

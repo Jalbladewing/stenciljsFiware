@@ -8,11 +8,6 @@ import 'stencil-apexcharts';
   shadow: true
 })
 export class AppTable {
-  
-  /**
-   * socket io instance 
-   */
-  _socketService: SocketIoService = SocketIoService.getInstance();
 
   @State() list: any[];
   @State() attributeList: string[];
@@ -21,6 +16,11 @@ export class AppTable {
   @Prop() filter: string;
   @Prop() service_url: string;
   @Prop() page_url: string;
+
+    /**
+   * socket io instance 
+   */
+  _socketService: SocketIoService = SocketIoService.getInstance(this.service_url);
 
   constructor() {
     this._socketService;

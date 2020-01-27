@@ -101,12 +101,12 @@ declare global {
   }
 
   interface StencilIntrinsicElements {
-    'app-comboBox': Components.AppComboboxAttributes;
-    'app-compareChart': Components.AppComparechartAttributes;
-    'app-realChart': Components.AppRealchartAttributes;
+    'app-combobox': Components.AppComboboxAttributes;
+    'app-comparechart': Components.AppComparechartAttributes;
+    'app-realchart': Components.AppRealchartAttributes;
     'app-root': Components.AppRootAttributes;
     'app-table': Components.AppTableAttributes;
-    'app-writeComponent': Components.AppWritecomponentAttributes;
+    'app-writecomponent': Components.AppWritecomponentAttributes;
   }
 
 
@@ -147,21 +147,21 @@ declare global {
   };
 
   interface HTMLElementTagNameMap {
-    'app-comboBox': HTMLAppComboboxElement
-    'app-compareChart': HTMLAppComparechartElement
-    'app-realChart': HTMLAppRealchartElement
+    'app-combobox': HTMLAppComboboxElement
+    'app-comparechart': HTMLAppComparechartElement
+    'app-realchart': HTMLAppRealchartElement
     'app-root': HTMLAppRootElement
     'app-table': HTMLAppTableElement
-    'app-writeComponent': HTMLAppWritecomponentElement
+    'app-writecomponent': HTMLAppWritecomponentElement
   }
 
   interface ElementTagNameMap {
-    'app-comboBox': HTMLAppComboboxElement;
-    'app-compareChart': HTMLAppComparechartElement;
-    'app-realChart': HTMLAppRealchartElement;
+    'app-combobox': HTMLAppComboboxElement;
+    'app-comparechart': HTMLAppComparechartElement;
+    'app-realchart': HTMLAppRealchartElement;
     'app-root': HTMLAppRootElement;
     'app-table': HTMLAppTableElement;
-    'app-writeComponent': HTMLAppWritecomponentElement;
+    'app-writecomponent': HTMLAppWritecomponentElement;
   }
 
 
