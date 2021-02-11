@@ -12,7 +12,7 @@
   "dependencies": {
     "@stencil/core": "~0.16.2",
     "@stencil/router": "~0.3.1",
-    "apexcharts": "^3.9.0",
+    "apexcharts": "^3.24.0",
     "stencil-apexcharts": "^2.1.1"
   },
   "license": "MIT",
